@@ -71,7 +71,7 @@
 //Methods to open sockets on different threads for nonblocking
 DWORD WINAPI openDataSocket(LPVOID lpParam);
 DWORD WINAPI listenNameSocket(LPVOID lpParam);
-void decodeAndSendEvents(char* bytes, int numBytes);
+void decodeAndSendEvents(unsigned char* bytes, int numBytes);
 
 
 enum ButtonEventType {
@@ -163,7 +163,7 @@ public:
 	void setDoubleTapTime();
 	void startService()
 	void stopService()
-	
+
 	Other nControl / Battery and etc. Once implemented in service
 	*/
 private:

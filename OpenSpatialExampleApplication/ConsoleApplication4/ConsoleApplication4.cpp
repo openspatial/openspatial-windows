@@ -7,7 +7,8 @@ int __cdecl main(int argc, char **argv)
 	controller = new OpenSpatialServiceController;
 	ExampleDelegate* del = new ExampleDelegate;
 	controller->setDelegate(del);
-	while (true)
+	BOOL continuer = true;
+	while (continuer)
 	{
 		std::string input;
 		printf("\nInput: ");
@@ -67,6 +68,12 @@ int __cdecl main(int argc, char **argv)
 		{
 			printf("switching to pose6d\n");
 			controller->setMode(controller->names.at(0), MODE_3D);
+		}
+		if (strcmp(input.c_str(), "bye") == 0)
+		{
+			printf("exiting");
+			delete controller;
+			continuer = false;
 		}
 	}
 	return 0;
