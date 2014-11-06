@@ -43,7 +43,10 @@ int __cdecl main(int argc, char **argv)
 			if (strcmp(input.c_str(), "pose6d") == 0)
 			{
 				printf("subscribe pose6d %s\n", controller->names.at(index).c_str());
-				controller->subscribeToPose6D(controller->names.at(index));
+				for (int i = 0; i < controller->names.size(); i++)
+				{
+					controller->subscribeToPose6D(controller->names.at(i));
+				}
 			}
 		}
 		if (strcmp(input.c_str(), "start") == 0)

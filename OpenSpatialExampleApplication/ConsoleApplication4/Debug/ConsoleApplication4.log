@@ -1,13 +1,9 @@
-﻿Build started 9/30/2014 11:53:33 AM.
-     1>Project "C:\Users\Khwaab Dave\Documents\Visual Studio 2013\Projects\ConsoleApplication4\ConsoleApplication4\ConsoleApplication4.vcxproj" on node 2 (Build target(s)).
+﻿Build started 11/4/2014 10:35:35 AM.
+     1>Project "D:\src\enimai\Windows\ExampleConsoleApp\ConsoleApplication4\ConsoleApplication4.vcxproj" on node 2 (Build target(s)).
      1>Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Khwaab Dave\Documents\Visual Studio 2013\Projects\ConsoleApplication4\Debug\ConsoleApplication4.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Khwaab Dave\Documents\Visual Studio 2013\Projects\ConsoleApplication4\Debug\ConsoleApplication4.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Khwaab Dave\Documents\Visual Studio 2013\Projects\ConsoleApplication4\Debug\ConsoleApplication4.lib" /MACHINE:X86 Debug\ConsoleApplication4.obj
-         Debug\ExampleDelegate.obj
-         Debug\stdafx.obj
-         LINK : C:\Users\Khwaab Dave\Documents\Visual Studio 2013\Projects\ConsoleApplication4\Debug\ConsoleApplication4.exe not found or not built by the last incremental link; performing full link
-         ConsoleApplication4.vcxproj -> C:\Users\Khwaab Dave\Documents\Visual Studio 2013\Projects\ConsoleApplication4\Debug\ConsoleApplication4.exe
-     1>Done Building Project "C:\Users\Khwaab Dave\Documents\Visual Studio 2013\Projects\ConsoleApplication4\ConsoleApplication4\ConsoleApplication4.vcxproj" (Build target(s)).
+         ConsoleApplication4.vcxproj -> D:\src\enimai\Windows\ExampleConsoleApp\Debug\ConsoleApplication4.exe
+     1>Done Building Project "D:\src\enimai\Windows\ExampleConsoleApp\ConsoleApplication4\ConsoleApplication4.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:05.98
+Time Elapsed 00:00:00.04

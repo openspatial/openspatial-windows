@@ -1,0 +1,33 @@
+﻿Build started 11/4/2014 10:51:00 AM.
+     1>Project "D:\src\enimai\Windows\ExampleConsoleApp\ConsoleApplication4\ConsoleApplication4.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Release\ConsoleApplication4.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+     1>d:\src\enimai\windows\exampleconsoleapp\consoleapplication4\OpenSpatialServiceController.h(146): warning C4251: 'OpenSpatialServiceController::names' : class 'std::vector<std::string,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'OpenSpatialServiceController'
+                 with
+                 [
+                     _Ty=std::string
+                 ]
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\ConsoleApplication4.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ConsoleApplication4.cpp ExampleDelegate.cpp
+         ConsoleApplication4.cpp
+     1>ConsoleApplication4.cpp(46): warning C4018: '<' : signed/unsigned mismatch
+         ExampleDelegate.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\src\enimai\Windows\ExampleConsoleApp\Release\ConsoleApplication4.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\src\enimai\Windows\ExampleConsoleApp\Release\ConsoleApplication4.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\src\enimai\Windows\ExampleConsoleApp\Release\ConsoleApplication4.lib" /MACHINE:X86 /SAFESEH Release\ConsoleApplication4.obj
+         Release\ExampleDelegate.obj
+         Release\stdafx.obj
+     1>ConsoleApplication4.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __thiscall OpenSpatialServiceController::OpenSpatialServiceController(void)" (__imp_??0OpenSpatialServiceController@@QAE@XZ)
+     1>ConsoleApplication4.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall OpenSpatialServiceController::setDelegate(class OpenSpatialDelegate *)" (__imp_?setDelegate@OpenSpatialServiceController@@QAEXPAVOpenSpatialDelegate@@@Z)
+     1>ConsoleApplication4.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall OpenSpatialServiceController::shutdown(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (__imp_?shutdown@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+     1>ConsoleApplication4.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall OpenSpatialServiceController::subscribeToPointer(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (__imp_?subscribeToPointer@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+     1>ConsoleApplication4.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall OpenSpatialServiceController::subscribeToGesture(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (__imp_?subscribeToGesture@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+     1>ConsoleApplication4.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall OpenSpatialServiceController::subscribeToButton(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (__imp_?subscribeToButton@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+     1>ConsoleApplication4.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall OpenSpatialServiceController::subscribeToPose6D(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (__imp_?subscribeToPose6D@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+     1>ConsoleApplication4.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall OpenSpatialServiceController::setMode(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,int)" (__imp_?setMode@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@Z)
+     1>ConsoleApplication4.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __thiscall OpenSpatialServiceController::~OpenSpatialServiceController(void)" (__imp_??1OpenSpatialServiceController@@QAE@XZ)
+     1>D:\src\enimai\Windows\ExampleConsoleApp\Release\ConsoleApplication4.exe : fatal error LNK1120: 9 unresolved externals
+     1>Done Building Project "D:\src\enimai\Windows\ExampleConsoleApp\ConsoleApplication4\ConsoleApplication4.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.75
