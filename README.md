@@ -35,12 +35,12 @@ If you select a ring and click settings you can change some settings of the ring
 
 Note: Updating firmware is not supported on windows yet. The UI elements for updating firmware will not do anything
 
-Part 3: Writing your own application with the DLL (using visual studio)
+Part 3: Writing your own application with the Plugin Source (using visual studio)
 	Note: currently only C++ is supported.
 
 Create a new visual studio project
-Copy OpenSpatialDLL.dll, OpenSpatialDLL.lib and OpenSpatialController.h into your source folder
-Add OpenSpatialController.h to your solution.
+Copy OpenSpatialServiceController.h and OpenSpatialServiceController.cpp from the "Nod Plugin Source" in our github repository into your source folder
+Add OpenSpatialController.h and OpenSpatialServiceController.cpp to your solution.
 
 Now you are ready to start using the code. (Please look at the source of the provided visual studio example project if there is any confusion).
 
