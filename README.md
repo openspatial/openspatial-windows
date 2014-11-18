@@ -7,31 +7,22 @@ Open Spatial Service Instructions (v0.0.2)
 
 Welcome to the Open Spatial Windows Service. Here are some basic instructions to get you started.
 
-The package you received will contain 2 items
+The package you received will contain 3 folders
 
-NodSetup.exe - an executable to install the Nod service
-OpenSpatialExampleApplication - a Visual Studio 2013 example project, showcasing how to integrate with the Nod DLL
+Nod Installer - Directory which contains the installation files
+Nod Plugin Source - The Nod Plugin to integrate Nod with any Visual Studio project
+OpenSpatialExampleApplication - a Visual Studio 2013 example project, showcasing how to integrate with the Nod Plugin
 
-Note: most of these operations must be done as administrator. If you encounter errors please check you are running everything as an administrator before contacting us.
 
 Part 1: Installing the service
 
-Right-click NodSetup.exe and select ‘Run as Administrator’
-This will create a directory called NodConfig in your ‘c:\Program Files\’ folder
-Installer only works when mapped with a C drive. If your computer setup is different, please contact us at support@hellonod.com. We will fix this shortly.
+Run setup.exe in the Nod Installer Directory
 
 Part 2: Starting the Service and Using the NodConfig application
 
 Connect all your rings to your PC via Bluetooth
-
-Note: If you connect new rings please close and reopen the NodConfig application to
-use them.
-
-Open NodConfig.exe (Run as Administrator)
-NodConfig.exe will be located at ‘c:\Program Files\NodConfig’
-This will start the OpenSpatialService
-Click Refresh to list your connected rings
-If you select a ring and click settings you can change some settings of the ring
+The Nod Configuration App should start automatically after installation.
+Click the refresh button to see your rings and select settings to modify a ring.
 
 Note: Updating firmware is not supported on windows yet. The UI elements for updating firmware will not do anything
 
