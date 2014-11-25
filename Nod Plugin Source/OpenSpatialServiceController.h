@@ -139,7 +139,7 @@ public:
 	std::vector<std::string> names;
 };
 
-class OSAPI OpenSpatialServiceController
+class OpenSpatialServiceController
 {
 public:
 	OpenSpatialServiceController();
