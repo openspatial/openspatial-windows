@@ -37,9 +37,10 @@
 #define SUBSCRIBE_TO_BUTTON 131
 #define SHUTDOWN_NOD 132
 #define GET_CONNECTED_NAMES 133
-#define SET_TTM 134
-#define SET_GAMEPAD 135
-#define SET_3DMODE 136
+#define UNSUBSCRIBE_TO_POINTER 134
+#define UNSUBSCRIBE_TO_GESTURE 135
+#define UNSUBSCRIBE_TO_POSE6D 136
+#define UNSUBSCRIBE_TO_BUTTON 147
 #define RECENTER_NOD 137
 #define RECALIBRATE_NOD 138
 #define FLIP_Y_NOD 139
@@ -49,10 +50,6 @@
 #define SET_TAP_TIME 143
 #define SET_DOUBLE_TAP_TIME 144
 #define REFRESH_SERVICE 145
-
-#define MODE_TTM 0
-#define MODE_GAMEPAD 1
-#define MODE_3D 2
 
 #define G_OP_SCROLL 0x0001
 #define G_OP_DIRECTION 0x0002
@@ -152,8 +149,11 @@ public:
 	void subscribeToGesture(std::string name);
 	void subscribeToButton(std::string name);
 	void subscribeToPose6D(std::string name);
+	void unsubscribeToPose6D(std::string name);
+	void unsubscribeToPointer(std::string name);
+	void unsubscribeToGesture(std::string name);
+	void unsubscribeToButton(std::string name);
 	void shutdown(std::string name);
-	void setMode(std::string name, int mode);
 	void recenter(std::string name);
 	void recalibrate(std::string name);
 	void flipY(std::string name);
@@ -161,16 +161,7 @@ public:
 	void setDelegate(OpenSpatialDelegate* del);
 	void refreshService();
 	SC_HANDLE serviceManager;
-	/* To Implement
-	void setRes();
-	void setInputQueueDepth();
-	void setTapTime();
-	void setDoubleTapTime();
-	void startService()
-	void stopService()
 
-	Other nControl / Battery and etc. Once implemented in service
-	*/
 private:
 	void ClearGlobalVariables();
 

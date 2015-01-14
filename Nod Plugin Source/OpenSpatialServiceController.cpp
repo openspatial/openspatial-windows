@@ -37,6 +37,16 @@ OpenSpatialServiceController::OpenSpatialServiceController() :
 
 OpenSpatialServiceController::~OpenSpatialServiceController()
 {
+	for (int i = 0; i < names.size(); i++)
+	{
+		unsubscribeToButton(names.at(i));
+		Sleep(500);
+		unsubscribeToGesture(names.at(i));
+		Sleep(500);
+		unsubscribeToPointer(names.at(i));
+		Sleep(500);
+		unsubscribeToPose6D(names.at(i));
+	}
 	int result = CloseServiceHandle(OSService);
 	if (result == 0) {
 		//PAW something went wrong need to deal with in.
@@ -53,6 +63,7 @@ OpenSpatialServiceController::~OpenSpatialServiceController()
 
 	GetExitCodeThread(nameThreadHandle, &exitCode);
 	TerminateThread(nameThreadHandle, exitCode);
+
 
 	ClearGlobalVariables();
 }
@@ -124,9 +135,19 @@ int OpenSpatialServiceController::setupService()
 		&nameThreadID);
 
 	SERVICE_STATUS status;
-
+	//Refresh Service
+	BOOL bResult = ControlService(OSService, REFRESH_SERVICE, &status);
+	if (bResult)
+	{
+		Sleep(1000);
+	}
+	else
+	{
+		OutputDebugString(L"Error Refreshing");
+		return -1;
+	}
 	//Get Names of connected devices
-	BOOL bResult = ControlService(OSService, GET_CONNECTED_NAMES, &status);
+	bResult = ControlService(OSService, GET_CONNECTED_NAMES, &status);
 	BOOL waitForNames = true;
 
 	
@@ -609,61 +630,137 @@ void OpenSpatialServiceController::sendName(std::string name)
 
 void OpenSpatialServiceController::subscribeToPointer(std::string name)
 {
-	sendName(name);
-	subscribedToPointer = true;
-	SERVICE_STATUS status;
-
-	BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_POINTER, &status);
-	if (!bResult)
+	if (!subscribedToPointer)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SUBSCRIBE 2D %d", GetLastError());
-		//Handle errors
+		sendName(name);
+		subscribedToPointer = true;
+		SERVICE_STATUS status;
+		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_POINTER, &status);
+		if (!bResult)
+		{
+			if (!buildingForUnity)
+				printf("ERROR SUBSCRIBE 2D %d", GetLastError());
+			//Handle errors
+		}
 	}
 }
 
 void OpenSpatialServiceController::subscribeToButton(std::string name)
 {
-	sendName(name);
-	subscribedToButton = true;
-	SERVICE_STATUS status;
-
-	BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_BUTTON, &status);
-	if (!bResult)
+	if (!subscribedToButton)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SUBSCRIBE BUTTON %d", GetLastError());
-		//Handle errors
+		sendName(name);
+		subscribedToButton = true;
+		SERVICE_STATUS status;
+		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_BUTTON, &status);
+		if (!bResult)
+		{
+			if (!buildingForUnity)
+				printf("ERROR SUBSCRIBE BUTTON %d", GetLastError());
+			//Handle errors
+		}
 	}
 }
 
 void OpenSpatialServiceController::subscribeToGesture(std::string name)
 {
-	sendName(name);
-	subscribedToGesture = true;
-	SERVICE_STATUS status;
-	
-	BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_GESTURE, &status);
-	if (!bResult)
+	if (!subscribedToGesture)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SUBSCRIBE GESTURE %d", GetLastError());
-		//Handle errors
+		sendName(name);
+		subscribedToGesture = true;
+		SERVICE_STATUS status;
+		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_GESTURE, &status);
+		if (!bResult)
+		{
+			if (!buildingForUnity)
+				printf("ERROR SUBSCRIBE GESTURE %d", GetLastError());
+			//Handle errors
+		}
 	}
 }
 
 void OpenSpatialServiceController::subscribeToPose6D(std::string name)
 {
-	sendName(name);
-	subscribedToPose6D = true;
-	SERVICE_STATUS status;
-
-	BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_POSE6D, &status);
-	if (!bResult)
+	if (!subscribedToPose6D)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SUBSCRIBE POSE 6D %d", GetLastError());
-		//Handle errors
+		sendName(name);
+		subscribedToPose6D = true;
+		SERVICE_STATUS status;
+		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_POSE6D, &status);
+		if (!bResult)
+		{
+			if (!buildingForUnity)
+				printf("ERROR SUBSCRIBE POSE 6D %d", GetLastError());
+			//Handle errors
+		}
+	}
+}
+
+void OpenSpatialServiceController::unsubscribeToPointer(std::string name)
+{
+	if (subscribedToPointer)
+	{
+		sendName(name);
+		subscribedToPointer = false;
+		SERVICE_STATUS status;
+		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_POINTER, &status);
+		if (!bResult)
+		{
+			if (!buildingForUnity)
+				printf("ERROR SUBSCRIBE 2D %d", GetLastError());
+			//Handle errors
+		}
+	}
+}
+
+void OpenSpatialServiceController::unsubscribeToButton(std::string name)
+{
+	if (subscribedToButton)
+	{
+		sendName(name);
+		subscribedToButton = false;
+		SERVICE_STATUS status;
+		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_BUTTON, &status);
+		if (!bResult)
+		{
+			if (!buildingForUnity)
+				printf("ERROR SUBSCRIBE BUTTON %d", GetLastError());
+			//Handle errors
+		}
+	}
+}
+
+void OpenSpatialServiceController::unsubscribeToGesture(std::string name)
+{
+	if (subscribedToGesture)
+	{
+		sendName(name);
+		subscribedToGesture = false;
+		SERVICE_STATUS status;
+		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_GESTURE, &status);
+		if (!bResult)
+		{
+			if (!buildingForUnity)
+				printf("ERROR SUBSCRIBE GESTURE %d", GetLastError());
+			//Handle errors
+		}
+	}
+}
+
+void OpenSpatialServiceController::unsubscribeToPose6D(std::string name)
+{
+	if (subscribedToPose6D)
+	{
+		sendName(name);
+		subscribedToPose6D = false;
+		SERVICE_STATUS status;
+		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_POSE6D, &status);
+		if (!bResult)
+		{
+			if (!buildingForUnity)
+				printf("ERROR SUBSCRIBE POSE 6D %d", GetLastError());
+			//Handle errors
+		}
 	}
 }
 
@@ -671,7 +768,6 @@ void OpenSpatialServiceController::shutdown(std::string name)
 {
 	sendName(name);
 	SERVICE_STATUS status;
-
 	BOOL bResult = ControlService(OSService, SHUTDOWN_NOD, &status);
 	if (!bResult)
 	{
@@ -681,39 +777,10 @@ void OpenSpatialServiceController::shutdown(std::string name)
 	}
 }
 
-void OpenSpatialServiceController::setMode(std::string name, int mode)
-{
-	sendName(name);
-	SERVICE_STATUS status;
-
-	BOOL bResult = false;
-
-	switch (mode)
-	{
-	case MODE_TTM: 
-		bResult = ControlService(OSService, SET_TTM, &status); 
-		break;
-	case MODE_GAMEPAD: 
-		bResult = ControlService(OSService, SET_GAMEPAD, &status); 
-		break;
-	case MODE_3D: 
-		bResult = ControlService(OSService, SET_3DMODE, &status); 
-		break;
-	default: return;
-	}
-
-	if (!bResult)
-	{
-		if (!buildingForUnity)
-			printf("ERROR SET MODE %d", GetLastError());
-		//Handle errors
-	}
-}
 void OpenSpatialServiceController::recenter(std::string name)
 {
 	sendName(name);
 	SERVICE_STATUS status;
-
 	BOOL bResult = ControlService(OSService, RECENTER_NOD, &status);
 	if (!bResult)
 	{
@@ -726,7 +793,6 @@ void OpenSpatialServiceController::recalibrate(std::string name)
 {
 	sendName(name);
 	SERVICE_STATUS status;
-
 	BOOL bResult = ControlService(OSService, RECALIBRATE_NOD, &status);
 	if (!bResult)
 	{
@@ -739,7 +805,6 @@ void OpenSpatialServiceController::flipY(std::string name)
 {
 	sendName(name);
 	SERVICE_STATUS status;
-
 	BOOL bResult = ControlService(OSService, FLIP_Y_NOD, &status);
 	if (!bResult)
 	{
@@ -752,7 +817,6 @@ void OpenSpatialServiceController::flipRot(std::string name)
 {
 	sendName(name);
 	SERVICE_STATUS status;
-
 	BOOL bResult = ControlService(OSService, FLIP_ROT_NOD, &status);
 	if (!bResult)
 	{
@@ -774,7 +838,6 @@ void OpenSpatialServiceController::refreshService()
 	nameOutput.clear();
 	names.clear();
 	BOOL bResult2 = ControlService(OSService, GET_CONNECTED_NAMES, status);
-
 	if (bResult2)
 	{
 		BOOL waitForNames = true;

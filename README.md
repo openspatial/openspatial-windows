@@ -16,7 +16,7 @@ OpenSpatialExampleApplication - a Visual Studio 2013 example project, showcasing
 
 Part 1: Installing the service
 
-Run setup.exe in the Nod Installer Directory
+Run setup.exe in the Nod Installer Directory after reading the ReadMe file in the same directory.
 
 Part 2: Starting the Service and Using the NodConfig application
 
@@ -91,8 +91,6 @@ e.x. *yourOpenSpatialController* -> setDelegate(*yourOpenSpatialDelegate);
 Step Four: Enjoy your data
 
 Data should now be flowing into your application once you subscribe to the appropriate events.
-
-Note: Pointer and Gesture events will only occur in Pointer Mode. Button and Pose6D events will only occur in 3D Mode. Pose6D events will only occur after sliding once on the ring’s slider. Please refer to your Nod Manual to know how to slide.
 
 Thank You for using Nod!
 
