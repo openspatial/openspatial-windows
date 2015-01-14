@@ -1,0 +1,83 @@
+﻿Build started 1/12/2015 5:20:45 PM.
+     1>Project "E:\src\enimai\Windows\ExampleAppNoDLL\ExampleAppNoDLL\ExampleAppNoDLL.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\ExampleAppNoDLL.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt OpenSpatialServiceController.cpp
+         OpenSpatialServiceController.cpp
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(145): warning C4251: 'OpenSpatialServiceController::names' : class 'std::vector<std::string,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'OpenSpatialServiceController'
+                 with
+                 [
+                     _Ty=std::string
+                 ]
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(22): warning C4273: 'OpenSpatialServiceController::OpenSpatialServiceController' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(142) : see previous definition of '{ctor}'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(39): warning C4273: 'OpenSpatialServiceController::~OpenSpatialServiceController' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(143) : see previous definition of '{dtor}'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(40): warning C4018: '<' : signed/unsigned mismatch
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(72): warning C4273: 'OpenSpatialServiceController::ClearGlobalVariables' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(166) : see previous definition of 'ClearGlobalVariables'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(84): warning C4273: 'OpenSpatialServiceController::setDelegate' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(161) : see previous definition of 'setDelegate'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(89): warning C4273: 'OpenSpatialServiceController::setupService' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(170) : see previous definition of 'setupService'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(193): warning C4273: 'OpenSpatialServiceController::getNames' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(146) : see previous definition of 'getNames'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(198): warning C4273: 'OpenSpatialServiceController::waitForServiceStatus' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(144) : see previous definition of 'waitForServiceStatus'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(525): warning C4273: 'OpenSpatialServiceController::openNameSocket' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(168) : see previous definition of 'openNameSocket'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(614): warning C4273: 'OpenSpatialServiceController::sendName' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(171) : see previous definition of 'sendName'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(632): warning C4273: 'OpenSpatialServiceController::subscribeToPointer' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(148) : see previous definition of 'subscribeToPointer'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(649): warning C4273: 'OpenSpatialServiceController::subscribeToButton' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(150) : see previous definition of 'subscribeToButton'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(666): warning C4273: 'OpenSpatialServiceController::subscribeToGesture' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(149) : see previous definition of 'subscribeToGesture'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(683): warning C4273: 'OpenSpatialServiceController::subscribeToPose6D' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(151) : see previous definition of 'subscribeToPose6D'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(700): warning C4273: 'OpenSpatialServiceController::unsubscribeToPointer' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(153) : see previous definition of 'unsubscribeToPointer'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(717): warning C4273: 'OpenSpatialServiceController::unsubscribeToButton' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(155) : see previous definition of 'unsubscribeToButton'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(734): warning C4273: 'OpenSpatialServiceController::unsubscribeToGesture' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(154) : see previous definition of 'unsubscribeToGesture'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(751): warning C4273: 'OpenSpatialServiceController::unsubscribeToPose6D' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(152) : see previous definition of 'unsubscribeToPose6D'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(768): warning C4273: 'OpenSpatialServiceController::shutdown' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(156) : see previous definition of 'shutdown'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(781): warning C4273: 'OpenSpatialServiceController::recenter' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(157) : see previous definition of 'recenter'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(793): warning C4273: 'OpenSpatialServiceController::recalibrate' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(158) : see previous definition of 'recalibrate'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(805): warning C4273: 'OpenSpatialServiceController::flipY' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(159) : see previous definition of 'flipY'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(817): warning C4273: 'OpenSpatialServiceController::flipRot' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(160) : see previous definition of 'flipRot'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(830): warning C4273: 'OpenSpatialServiceController::refreshService' : inconsistent dll linkage
+                 e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.h(162) : see previous definition of 'refreshService'
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(854): warning C4018: '<' : signed/unsigned mismatch
+     1>e:\src\enimai\windows\exampleappnodll\exampleappnodll\openspatialservicecontroller.cpp(872): warning C4018: '<' : signed/unsigned mismatch
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\src\enimai\Windows\ExampleAppNoDLL\Debug\ExampleAppNoDLL.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\src\enimai\Windows\ExampleAppNoDLL\Debug\ExampleAppNoDLL.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\src\enimai\Windows\ExampleAppNoDLL\Debug\ExampleAppNoDLL.lib" /MACHINE:X86 Debug\ExampleAppNoDLL.obj
+         Debug\ExampleDelegate.obj
+         Debug\OpenSpatialServiceController.obj
+         Debug\stdafx.obj
+            Creating library E:\src\enimai\Windows\ExampleAppNoDLL\Debug\ExampleAppNoDLL.lib and object E:\src\enimai\Windows\ExampleAppNoDLL\Debug\ExampleAppNoDLL.exp
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ??0OpenSpatialServiceController@@QAE@XZ (public: __thiscall OpenSpatialServiceController::OpenSpatialServiceController(void)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ??1OpenSpatialServiceController@@QAE@XZ (public: __thiscall OpenSpatialServiceController::~OpenSpatialServiceController(void)) imported in function "public: void * __thiscall OpenSpatialServiceController::`scalar deleting destructor'(unsigned int)" (??_GOpenSpatialServiceController@@QAEPAXI@Z)
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?subscribeToPointer@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z (public: void __thiscall OpenSpatialServiceController::subscribeToPointer(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?subscribeToGesture@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z (public: void __thiscall OpenSpatialServiceController::subscribeToGesture(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?subscribeToButton@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z (public: void __thiscall OpenSpatialServiceController::subscribeToButton(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?subscribeToPose6D@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z (public: void __thiscall OpenSpatialServiceController::subscribeToPose6D(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?unsubscribeToPose6D@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z (public: void __thiscall OpenSpatialServiceController::unsubscribeToPose6D(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?unsubscribeToPointer@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z (public: void __thiscall OpenSpatialServiceController::unsubscribeToPointer(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?unsubscribeToGesture@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z (public: void __thiscall OpenSpatialServiceController::unsubscribeToGesture(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?unsubscribeToButton@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z (public: void __thiscall OpenSpatialServiceController::unsubscribeToButton(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?shutdown@OpenSpatialServiceController@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z (public: void __thiscall OpenSpatialServiceController::shutdown(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)) imported in function _main
+     1>ExampleAppNoDLL.obj : warning LNK4217: locally defined symbol ?setDelegate@OpenSpatialServiceController@@QAEXPAVOpenSpatialDelegate@@@Z (public: void __thiscall OpenSpatialServiceController::setDelegate(class OpenSpatialDelegate *)) imported in function _main
+         ExampleAppNoDLL.vcxproj -> E:\src\enimai\Windows\ExampleAppNoDLL\Debug\ExampleAppNoDLL.exe
+     1>Done Building Project "E:\src\enimai\Windows\ExampleAppNoDLL\ExampleAppNoDLL\ExampleAppNoDLL.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.79
