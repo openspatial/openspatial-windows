@@ -152,8 +152,8 @@ public:
 	~OpenSpatialServiceController();
 	void waitForServiceStatus(DWORD statusTo, SC_HANDLE service);
 	std::vector<std::string> names;
-	std::vector<std::string> getNames();
 	std::map<std::string, DeviceManager> deviceMap;
+	std::vector<std::string> getNames();
 	BOOL setup = false;
 	void subscribeToPointer(std::string name);
 	void subscribeToGesture(std::string name);

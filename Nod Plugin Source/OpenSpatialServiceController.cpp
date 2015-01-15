@@ -9,6 +9,7 @@ DWORD portCount = 0;
 
 std::vector<std::string> nameOutput;
 
+std::vector<std::string> namesGlob;
 
 OpenSpatialDelegate* delegate;
 
@@ -174,6 +175,7 @@ int OpenSpatialServiceController::setupService()
 		{
 			DeviceManager manager;
 			deviceMap[names.at(i)] = manager;
+			namesGlob.push_back(names.at(i));
 		}
 	}
 	else
@@ -319,7 +321,7 @@ void decodeAndSendEvents(unsigned char* bytes, int numBytes)
 		pEvent.x = x;
 		pEvent.y = y;
 		pEvent.sender = id;
-		
+
 		delegate->pointerEventFired(pEvent);
 	}
 	else if (numBytes == 14)
@@ -623,7 +625,7 @@ void OpenSpatialServiceController::sendName(std::string name)
 
 void OpenSpatialServiceController::subscribeToPointer(std::string name)
 {
-	if (! deviceMap[name].isSubscribedPointer)
+	if (!deviceMap[name].isSubscribedPointer)
 	{
 		sendName(name);
 		deviceMap[name].isSubscribedPointer = true;
@@ -879,8 +881,11 @@ void OpenSpatialServiceController::refreshService()
 			deviceMap = newMap;
 		}
 	}
+	namesGlob.clear();
+	delegate->names.clear();
 	for (int i = 0; i < names.size(); i++)
 	{
 		delegate->names.push_back(names.at(i));
+		namesGlob.push_back(names.at(i));
 	}
 }
