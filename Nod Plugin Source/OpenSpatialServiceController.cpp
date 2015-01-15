@@ -9,10 +9,6 @@ DWORD portCount = 0;
 
 std::vector<std::string> nameOutput;
 
-BOOL subscribedToPointer = false;
-BOOL subscribedToButton = false;
-BOOL subscribedToGesture = false;
-BOOL subscribedToPose6D = false;
 
 OpenSpatialDelegate* delegate;
 
@@ -70,11 +66,6 @@ OpenSpatialServiceController::~OpenSpatialServiceController()
 
 void OpenSpatialServiceController::ClearGlobalVariables()
 {
-	subscribedToPointer = false;
-	subscribedToButton = false;
-	subscribedToGesture = false;
-	subscribedToPose6D = false;
-
 	nameOutput.clear();
 
 	portCount = 0;
@@ -178,6 +169,11 @@ int OpenSpatialServiceController::setupService()
 				nameOutput.clear();
 				break;
 			}
+		}
+		for (int i = 0; i < names.size(); i++)
+		{
+			DeviceManager manager;
+			deviceMap[names.at(i)] = manager;
 		}
 	}
 	else
@@ -288,8 +284,6 @@ DWORD WINAPI openDataSocket(LPVOID lpParam)
 
 	while (true)
 	{
-		if (subscribedToPointer || subscribedToGesture || subscribedToButton || subscribedToPose6D)
-		{
 			iResult = recv(dataSocket, (char*)recvbuf, recvbuflen, 0);
 			if (iResult > 0)
 			{
@@ -299,7 +293,6 @@ DWORD WINAPI openDataSocket(LPVOID lpParam)
 				if (!buildingForUnity)
 					printf("Connection closed\n");
 			}
-		}
 	}
 	return 0;
 }
@@ -315,7 +308,7 @@ void decodeAndSendEvents(unsigned char* bytes, int numBytes)
 	if (NULL == delegate)
 		return;
 
-	if (numBytes == 6 && subscribedToPointer)
+	if (numBytes == 6)
 	{
 		// Pointer 2d
 		short x = bytes[0] | bytes[1] << 8;
@@ -329,7 +322,7 @@ void decodeAndSendEvents(unsigned char* bytes, int numBytes)
 		
 		delegate->pointerEventFired(pEvent);
 	}
-	else if (numBytes == 14 && subscribedToPose6D)
+	else if (numBytes == 14)
 	{
 		//Pose 6d
 		short int x = bytes[0] | (bytes[1] << 8);
@@ -360,7 +353,7 @@ void decodeAndSendEvents(unsigned char* bytes, int numBytes)
 
 		delegate->pose6DEventFired(pEvent);		
 	}
-	else if (numBytes == 4 && subscribedToButton)
+	else if (numBytes == 4)
 	{
 		short button = bytes[0] | (bytes[1] << 8);
 		short touch0 = (button & 0x3);
@@ -458,7 +451,7 @@ void decodeAndSendEvents(unsigned char* bytes, int numBytes)
 		if (!buildingForUnity)
 			printf("\n");
 	}
-	else if (subscribedToGesture)
+	else if (numBytes == 5)
 	{
 		//gesture
 		short opCode = bytes[0] | bytes[1] << 8;
@@ -630,10 +623,10 @@ void OpenSpatialServiceController::sendName(std::string name)
 
 void OpenSpatialServiceController::subscribeToPointer(std::string name)
 {
-	if (!subscribedToPointer)
+	if (! deviceMap[name].isSubscribedPointer)
 	{
 		sendName(name);
-		subscribedToPointer = true;
+		deviceMap[name].isSubscribedPointer = true;
 		SERVICE_STATUS status;
 		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_POINTER, &status);
 		if (!bResult)
@@ -647,10 +640,10 @@ void OpenSpatialServiceController::subscribeToPointer(std::string name)
 
 void OpenSpatialServiceController::subscribeToButton(std::string name)
 {
-	if (!subscribedToButton)
+	if (!deviceMap[name].isSubscribedButtons)
 	{
 		sendName(name);
-		subscribedToButton = true;
+		deviceMap[name].isSubscribedButtons = true;
 		SERVICE_STATUS status;
 		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_BUTTON, &status);
 		if (!bResult)
@@ -664,10 +657,10 @@ void OpenSpatialServiceController::subscribeToButton(std::string name)
 
 void OpenSpatialServiceController::subscribeToGesture(std::string name)
 {
-	if (!subscribedToGesture)
+	if (!deviceMap[name].isSubscribedGestures)
 	{
 		sendName(name);
-		subscribedToGesture = true;
+		deviceMap[name].isSubscribedGestures = true;
 		SERVICE_STATUS status;
 		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_GESTURE, &status);
 		if (!bResult)
@@ -681,10 +674,10 @@ void OpenSpatialServiceController::subscribeToGesture(std::string name)
 
 void OpenSpatialServiceController::subscribeToPose6D(std::string name)
 {
-	if (!subscribedToPose6D)
+	if (!deviceMap[name].isSubscribedPose6D)
 	{
 		sendName(name);
-		subscribedToPose6D = true;
+		deviceMap[name].isSubscribedPose6D = true;
 		SERVICE_STATUS status;
 		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_POSE6D, &status);
 		if (!bResult)
@@ -698,10 +691,10 @@ void OpenSpatialServiceController::subscribeToPose6D(std::string name)
 
 void OpenSpatialServiceController::unsubscribeToPointer(std::string name)
 {
-	if (subscribedToPointer)
+	if (deviceMap[name].isSubscribedPointer)
 	{
 		sendName(name);
-		subscribedToPointer = false;
+		deviceMap[name].isSubscribedPointer = false;
 		SERVICE_STATUS status;
 		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_POINTER, &status);
 		if (!bResult)
@@ -715,10 +708,10 @@ void OpenSpatialServiceController::unsubscribeToPointer(std::string name)
 
 void OpenSpatialServiceController::unsubscribeToButton(std::string name)
 {
-	if (subscribedToButton)
+	if (deviceMap[name].isSubscribedButtons)
 	{
 		sendName(name);
-		subscribedToButton = false;
+		deviceMap[name].isSubscribedButtons = false;
 		SERVICE_STATUS status;
 		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_BUTTON, &status);
 		if (!bResult)
@@ -732,10 +725,10 @@ void OpenSpatialServiceController::unsubscribeToButton(std::string name)
 
 void OpenSpatialServiceController::unsubscribeToGesture(std::string name)
 {
-	if (subscribedToGesture)
+	if (deviceMap[name].isSubscribedGestures)
 	{
 		sendName(name);
-		subscribedToGesture = false;
+		deviceMap[name].isSubscribedGestures = false;
 		SERVICE_STATUS status;
 		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_GESTURE, &status);
 		if (!bResult)
@@ -749,10 +742,10 @@ void OpenSpatialServiceController::unsubscribeToGesture(std::string name)
 
 void OpenSpatialServiceController::unsubscribeToPose6D(std::string name)
 {
-	if (subscribedToPose6D)
+	if (deviceMap[name].isSubscribedPose6D)
 	{
 		sendName(name);
-		subscribedToPose6D = false;
+		deviceMap[name].isSubscribedPose6D = false;
 		SERVICE_STATUS status;
 		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_POSE6D, &status);
 		if (!bResult)
@@ -867,6 +860,23 @@ void OpenSpatialServiceController::refreshService()
 				nameOutput.clear();
 				break;
 			}
+		}
+		if (names.size() != deviceMap.size())
+		{
+			std::map<std::string, DeviceManager> newMap;
+			for (int i = 0; i < names.size(); i++)
+			{
+				if (deviceMap.count(names.at(i)) > 0)
+				{
+					newMap[names.at(i)] = deviceMap[names.at(i)];
+				}
+				else
+				{
+					DeviceManager manager;
+					newMap[names.at(i)] = manager;
+				}
+			}
+			deviceMap = newMap;
 		}
 	}
 	for (int i = 0; i < names.size(); i++)

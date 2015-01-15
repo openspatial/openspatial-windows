@@ -19,6 +19,7 @@
 #include <string>
 #include <iostream>
 #include <winsvc.h>
+#include <map>
 
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
@@ -126,6 +127,14 @@ struct Pose6DEvent
 	int sender;
 };
 
+struct DeviceManager
+{
+	BOOL isSubscribedPointer = false;
+	BOOL isSubscribedPose6D = false;
+	BOOL isSubscribedGestures = false;
+	BOOL isSubscribedButtons = false;
+};
+
 class OpenSpatialDelegate
 {
 public:
@@ -144,6 +153,7 @@ public:
 	void waitForServiceStatus(DWORD statusTo, SC_HANDLE service);
 	std::vector<std::string> names;
 	std::vector<std::string> getNames();
+	std::map<std::string, DeviceManager> deviceMap;
 	BOOL setup = false;
 	void subscribeToPointer(std::string name);
 	void subscribeToGesture(std::string name);
