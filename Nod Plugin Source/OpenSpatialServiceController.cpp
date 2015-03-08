@@ -13,8 +13,7 @@ std::vector<std::string> namesGlob;
 
 OpenSpatialDelegate* delegate;
 
-//PAW grasping at straws here, figured it couldn't hurt to make not print
-const bool buildingForUnity = false;
+bool VERBOSE = false;
 
 OpenSpatialServiceController::OpenSpatialServiceController() :
 	dataThreadHandle(0),
@@ -26,8 +25,8 @@ OpenSpatialServiceController::OpenSpatialServiceController() :
 
 	if (setupService() < 0)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SETUP PLEASE TRY AGAIN");
+		if (VERBOSE)
+			std::cout << "ERROR SETUP PLEASE TRY AGAIN" << std::endl;
 		return;
 	}
 }
@@ -90,20 +89,20 @@ int OpenSpatialServiceController::setupService()
 		OSService = OpenService(serviceManager, L"OpenSpatialService", GENERIC_READ | READ_CONTROL | SERVICE_USER_DEFINED_CONTROL);
 		if (OSService == NULL)
 		{
-			if (!buildingForUnity)
-				printf("COULD NOT OPEN SERVICE");
+			if (VERBOSE)
+				std::cout << ("COULD NOT OPEN SERVICE") << std::end;
 			return -1;
 		}
 		else
 		{
-			if (!buildingForUnity)
-				printf("Found Service\n");
+			if (VERBOSE)
+				std::cout << ("Found Service\n") << std::endl;
 		}
 	}
 	else
 	{
-		if (!buildingForUnity)
-			printf("COULD NOT OPEN MANAGER %d", GetLastError());
+		if (VERBOSE)
+			std::cout << "COULD NOT OPEN MANAGER " << GetLastError() << std::endl;
 		return -1;
 	}
 
@@ -163,7 +162,7 @@ int OpenSpatialServiceController::setupService()
 			if (in < 0)
 			{
 				names.push_back(nameOutput.at(i));
-				printf("%s, ", names.at(i).c_str());
+				std::cout << names.at(i) << " ";
 			}
 			else
 			{
@@ -180,8 +179,8 @@ int OpenSpatialServiceController::setupService()
 	}
 	else
 	{
-		if (!buildingForUnity)
-			printf("ERROR GET NAMES %d", GetLastError());
+		if (VERBOSE)
+			std::cout << "ERROR GET NAMES " << GetLastError() << std::endl;
 		return -1;
 	}
 	return 0;
@@ -203,8 +202,8 @@ void OpenSpatialServiceController::waitForServiceStatus(DWORD statusTo, SC_HANDL
 		BOOL query = QueryServiceStatus(service, &status);
 		if (!query)
 		{
-			if (!buildingForUnity)
-				printf("ERROR WAITING QUERY %d", GetLastError());
+			if (VERBOSE)
+				std::cout << "ERROR WAITING QUERY " <<  GetLastError() << std::endl;
 		}
 		else
 		{
@@ -229,8 +228,8 @@ DWORD WINAPI openDataSocket(LPVOID lpParam)
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != 0) {
-		if (!buildingForUnity)
-			printf("WSAStartup failed with error: %d\n", iResult);
+		if (VERBOSE)
+			std::cout << "WSAStartup failed with error: " << iResult << std::endl
 		return 1;
 	}
 
@@ -257,8 +256,8 @@ DWORD WINAPI openDataSocket(LPVOID lpParam)
 		dataSocket = socket(ptr->ai_family, ptr->ai_socktype,
 			ptr->ai_protocol);
 		if (dataSocket == INVALID_SOCKET) {
-			if (!buildingForUnity)
-				printf("socket failed with error: %ld\n", WSAGetLastError());
+			if (VERBOSE)
+				std::cout << "socket failed with error: " <<  WSAGetLastError() << std::endl;
 			WSACleanup();
 			return 1;
 		}
@@ -276,13 +275,13 @@ DWORD WINAPI openDataSocket(LPVOID lpParam)
 	freeaddrinfo(result);
 
 	if (dataSocket == INVALID_SOCKET) {
-		if (!buildingForUnity)
-			printf("Unable to connect to server!\n");
+		if (VERBOSE)
+			std::cout << "Unable to connect to server!" << std::endl;
 		WSACleanup();
 		return 1;
 	}
-	if (!buildingForUnity)
-		printf("data connected\n");
+	if (VERBOSE)
+		std::cout << "data connected" << std::endl;
 
 	while (true)
 	{
@@ -292,8 +291,8 @@ DWORD WINAPI openDataSocket(LPVOID lpParam)
 				decodeAndSendEvents(recvbuf, iResult);
 			}
 			else if (iResult == 0) {
-				if (!buildingForUnity)
-					printf("Connection closed\n");
+				if (VERBOSE)
+					std::cout << "Connection closed" << std::endl;
 			}
 	}
 	return 0;
@@ -450,8 +449,8 @@ void decodeAndSendEvents(unsigned char* bytes, int numBytes)
 		lta0 = tact0;
 		lta1 = tact1;
 
-		if (!buildingForUnity)
-			printf("\n");
+		if (VERBOSE)
+			std::cout << std::endl;
 	}
 	else if (numBytes == 5)
 	{
@@ -530,8 +529,8 @@ DWORD OpenSpatialServiceController::openNameSocket()
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != 0) {
-		if (!buildingForUnity)
-			printf("WSAStartup failed with error: %d\n", iResult);
+		if (VERBOSE)
+			std::cout << "WSAStartup failed with error: " << iResult << std::endl;
 		return 1;
 	}
 
@@ -546,8 +545,8 @@ DWORD OpenSpatialServiceController::openNameSocket()
 	// Resolve the server address and port
 	iResult = getaddrinfo("127.0.0.1", os.str().c_str(), &hints, &result);
 	if (iResult != 0) {
-		if (!buildingForUnity)
-			printf("getaddrinfo failed with error: %d\n", iResult);
+		if (VERBOSE)
+			std::cout << "getaddrinfo failed with error: " << iResult << std::endl;
 		WSACleanup();
 		return 1;
 	}
@@ -559,8 +558,8 @@ DWORD OpenSpatialServiceController::openNameSocket()
 		nameSocket = socket(ptr->ai_family, ptr->ai_socktype,
 			ptr->ai_protocol);
 		if (nameSocket == INVALID_SOCKET) {
-			if (!buildingForUnity)
-				printf("socket failed with error: %ld\n", WSAGetLastError());
+			if (VERBOSE)
+				std::cout << "socket failed with error: " <<  WSAGetLastError() << std::endl;
 			WSACleanup();
 			return 1;
 		}
@@ -578,13 +577,13 @@ DWORD OpenSpatialServiceController::openNameSocket()
 	freeaddrinfo(result);
 
 	if (nameSocket == INVALID_SOCKET) {
-		if (!buildingForUnity)
-			printf("Unable to connect to server!\n");
+		if (VERBOSE)
+			std::cout << "Unable to connect to server!" << std::endl;
 		WSACleanup();
 		return 1;
 	}
-	if (!buildingForUnity)
-		printf("name connected\n");
+	if (VERBOSE)
+		std::cout << "name connected" << std::endl;
 
 	return 0;
 }
@@ -633,8 +632,8 @@ void OpenSpatialServiceController::subscribeToPointer(std::string name)
 		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_POINTER, &status);
 		if (!bResult)
 		{
-			if (!buildingForUnity)
-				printf("ERROR SUBSCRIBE 2D %d", GetLastError());
+			if (VERBOSE)
+				std::cout <<  "ERROR SUBSCRIBE POINTER " <<  GetLastError() << std::endl;
 			//Handle errors
 		}
 	}
@@ -650,8 +649,8 @@ void OpenSpatialServiceController::subscribeToButton(std::string name)
 		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_BUTTON, &status);
 		if (!bResult)
 		{
-			if (!buildingForUnity)
-				printf("ERROR SUBSCRIBE BUTTON %d", GetLastError());
+			if (VERBOSE)
+				std::cout << "ERROR SUBSCRIBE BUTTON " <<  GetLastError() << std::endl;
 			//Handle errors
 		}
 	}
@@ -667,8 +666,8 @@ void OpenSpatialServiceController::subscribeToGesture(std::string name)
 		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_GESTURE, &status);
 		if (!bResult)
 		{
-			if (!buildingForUnity)
-				printf("ERROR SUBSCRIBE GESTURE %d", GetLastError());
+			if (VERBOSE)
+				std::cout << ("ERROR SUBSCRIBE GESTURE " << GetLastError() << std::endl;
 			//Handle errors
 		}
 	}
@@ -684,8 +683,8 @@ void OpenSpatialServiceController::subscribeToPose6D(std::string name)
 		BOOL bResult = ControlService(OSService, SUBSCRIBE_TO_POSE6D, &status);
 		if (!bResult)
 		{
-			if (!buildingForUnity)
-				printf("ERROR SUBSCRIBE POSE 6D %d", GetLastError());
+			if (VERBOSE)
+				std::cout << "ERROR SUBSCRIBE POSE 6D " <<  GetLastError() << std::endl;
 			//Handle errors
 		}
 	}
@@ -701,8 +700,8 @@ void OpenSpatialServiceController::unsubscribeToPointer(std::string name)
 		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_POINTER, &status);
 		if (!bResult)
 		{
-			if (!buildingForUnity)
-				printf("ERROR SUBSCRIBE 2D %d", GetLastError());
+			if (VERBOSE)
+				std::cout << "ERROR SUBSCRIBE POINTER " << GetLastError() << std::endl;
 			//Handle errors
 		}
 	}
@@ -718,8 +717,9 @@ void OpenSpatialServiceController::unsubscribeToButton(std::string name)
 		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_BUTTON, &status);
 		if (!bResult)
 		{
-			if (!buildingForUnity)
-				printf("ERROR SUBSCRIBE BUTTON %d", GetLastError());
+			if (VERBOSE)
+				std::cout << "ERROR UNSUBSCRIBE BUTTON " << GetLastError() << std::endl;
+
 			//Handle errors
 		}
 	}
@@ -735,8 +735,9 @@ void OpenSpatialServiceController::unsubscribeToGesture(std::string name)
 		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_GESTURE, &status);
 		if (!bResult)
 		{
-			if (!buildingForUnity)
-				printf("ERROR SUBSCRIBE GESTURE %d", GetLastError());
+			if (VERBOSE)
+				std::cout << "ERROR UNSUBSCRIBE GESTURE" << GetLastError() << std::endl;
+
 			//Handle errors
 		}
 	}
@@ -752,8 +753,9 @@ void OpenSpatialServiceController::unsubscribeToPose6D(std::string name)
 		BOOL bResult = ControlService(OSService, UNSUBSCRIBE_TO_POSE6D, &status);
 		if (!bResult)
 		{
-			if (!buildingForUnity)
-				printf("ERROR SUBSCRIBE POSE 6D %d", GetLastError());
+			if (VERBOSE)
+				std::cout << "ERROR UNSUBSCRIBE POSE 6D " << GetLastError() << std::endl;
+
 			//Handle errors
 		}
 	}
@@ -766,8 +768,9 @@ void OpenSpatialServiceController::shutdown(std::string name)
 	BOOL bResult = ControlService(OSService, SHUTDOWN_NOD, &status);
 	if (!bResult)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SHUTDOWN %d", GetLastError());
+		if (VERBOSE)
+			std::cout << "ERROR SHUTDOWN " << GetLastError() << std::endl;
+
 		//Handle errors
 	}
 }
@@ -779,8 +782,9 @@ void OpenSpatialServiceController::recenter(std::string name)
 	BOOL bResult = ControlService(OSService, RECENTER_NOD, &status);
 	if (!bResult)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SHUTDOWN %d", GetLastError());
+		if (VERBOSE)
+			std::cout << "ERROR RECENTER " << GetLastError() << std::endl;
+
 		//Handle errors
 	}
 }
@@ -791,8 +795,9 @@ void OpenSpatialServiceController::recalibrate(std::string name)
 	BOOL bResult = ControlService(OSService, RECALIBRATE_NOD, &status);
 	if (!bResult)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SHUTDOWN %d", GetLastError());
+		if (VERBOSE)
+			std::cout << "ERROR RECALIBRATE" << GetLastError() << std::endl;
+
 		//Handle errors
 	}
 }
@@ -803,8 +808,9 @@ void OpenSpatialServiceController::flipY(std::string name)
 	BOOL bResult = ControlService(OSService, FLIP_Y_NOD, &status);
 	if (!bResult)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SHUTDOWN %d", GetLastError());
+		if (VERBOSE)
+			std::cout << "ERROR flipY " << GetLastError() << std::endl;
+
 		//Handle errors
 	}
 }
@@ -815,8 +821,9 @@ void OpenSpatialServiceController::flipRot(std::string name)
 	BOOL bResult = ControlService(OSService, FLIP_ROT_NOD, &status);
 	if (!bResult)
 	{
-		if (!buildingForUnity)
-			printf("ERROR SHUTDOWN %d", GetLastError());
+		if (VERBOSE)
+			std::cout << "ERROR flipRot " << GetLastError() << std::endl;
+
 		//Handle errors
 	}
 }
@@ -827,7 +834,8 @@ void OpenSpatialServiceController::refreshService()
 	BOOL bResult = ControlService(OSService, REFRESH_SERVICE, status);
 	if (!bResult)
 	{
-		printf("ERROR SHUTDOWN %d", GetLastError());
+		std::cout << "ERROR REFRESH " << GetLastError() << std::endl;
+
 		//Handle errors
 	}
 	nameOutput.clear();
@@ -855,7 +863,7 @@ void OpenSpatialServiceController::refreshService()
 			if (in < 0)
 			{
 				names.push_back(nameOutput.at(i));
-				printf("%s, ", names.at(i).c_str());
+				std::cout << names.at(i) << " ";
 			}
 			else
 			{
