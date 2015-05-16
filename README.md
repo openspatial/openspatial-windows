@@ -1,7 +1,7 @@
 openspatial-windows
 ===================
 
-Open Spatial Windows SDK
+Open Spatial Windows SDK - BETA!!!!!
 
 Open Spatial Service Instructions (v0.0.2)
 
