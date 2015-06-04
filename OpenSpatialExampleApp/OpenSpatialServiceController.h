@@ -1,80 +1,89 @@
-#pragma once
 
-#if defined(OPENSPATIAL_EXPORT) // inside DLL
-#   define OSAPI   __declspec(dllexport)
-#else // outside DLL
-#   define OSAPI   __declspec(dllimport)
-#endif  // XYZLIBRARY_EXPORT
-
-
+/*
+*
+*		Includes
+*
+*/
 
 #define WIN32_LEAN_AND_MEAN
-
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
+#include <map>
 #include <string>
 #include <iostream>
 #include <winsvc.h>
+#include <comdef.h>
+#include <iostream>
+#include <ShlObj.h>
+#include <Shlwapi.h>
+#include <sstream>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
-
-// Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
+#pragma comment(lib, "Urlmon.lib")
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
+#pragma comment (lib, "Shlwapi.lib")
 
-
-#define BUFFER_SIZE 512
-#define DEFAULT_PORT 19999
-#define DATA_PORT 20001
-
-#define SUBSCRIBE_TO_POINTER 128
-#define SUBSCRIBE_TO_GESTURE 129
-#define SUBSCRIBE_TO_POSE6D 130
-#define SUBSCRIBE_TO_BUTTON 131
-#define SHUTDOWN_NOD 132
-#define GET_CONNECTED_NAMES 133
-#define SET_TTM 134
-#define SET_GAMEPAD 135
-#define SET_3DMODE 136
-#define RECENTER_NOD 137
-#define RECALIBRATE_NOD 138
-#define FLIP_Y_NOD 139
-#define FLIP_ROT_NOD 140
-#define SET_SCREEN_RES 141
-#define SET_INPUT_QUEUE_DEPTH 142
-#define SET_TAP_TIME 143
-#define SET_DOUBLE_TAP_TIME 144
-#define REFRESH_SERVICE 145
-
-#define MODE_TTM 0
-#define MODE_GAMEPAD 1
-#define MODE_3D 2
-
-#define G_OP_SCROLL 0x0001
-#define G_OP_DIRECTION 0x0002
-#define GRIGHT 0x01
-#define GLEFT 0x02
-#define GDOWN 0x03
-#define GUP 0x04
-#define GCW 0x05
-#define GCCW 0x06
-#define SLIDE_LEFT 0x01
-#define SLIDE_RIGHT 0x02
-
-#define BUTTON_UP 2
-#define BUTTON_DOWN 1
-
-#define PORT_COUNT_KEY TEXT("portCounter")
-//Methods to open sockets on different threads for nonblocking
-DWORD WINAPI openDataSocket(LPVOID lpParam);
-DWORD WINAPI listenNameSocket(LPVOID lpParam);
-void decodeAndSendEvents(unsigned char* bytes, int numBytes);
-
-
+/*
+*
+*				Enums and Structs for nControl and OpenSpatial Events
+*
+*/
+enum ServiceControlCode {
+	SUBSCRIBE_TO_POINTER = 128,
+	SUBSCRIBE_TO_GESTURE = 129,
+	SUBSCRIBE_TO_POSE6D = 130,
+	SUBSCRIBE_TO_BUTTON = 131,
+	SHUTDOWN_NOD = 132,
+	GET_CONNECTED_NAMES = 133,
+	UNSUBSCRIBE_TO_POINTER = 134,
+	UNSUBSCRIBE_TO_GESTURE = 135,
+	UNSUBSCRIBE_TO_POSE6D = 136,
+	UNSUBSCRIBE_TO_BUTTON = 147,
+	RECENTER_NOD = 137,
+	RECALIBRATE_NOD = 138,
+	FLIP_Y_NOD = 139,
+	FLIP_ROT_NOD = 140,
+	SET_SCREEN_RES = 141,
+	SET_INPUT_QUEUE_DEPTH = 142,
+	SET_TAP_TIME = 143,
+	SET_DOUBLE_TAP_TIME = 144,
+	REFRESH_SERVICE = 145,
+	SUBSCRIBE_TO_MOT6D = 155,
+	SUBSCRIBE_TO_GAMECONTROL = 156,
+	UNSUBSCRIBE_TO_MOT6D = 157,
+	UNSUBSCRIBE_TO_GAMECONTROL = 158,
+	OTA = 146,
+	GET_BATTERY = 148,
+	GET_FIRMWARE = 149,
+	SET_MODE_POINTER = 150,
+	SET_MODE_GAMEPAD_L = 151,
+	SET_MODE_GAMEPAD_R = 152,
+	SET_MODE_FREEPOINTER = 153,
+	GET_MODE = 154
+};
+enum GestureOperations {
+	G_OP_SCROLL = 0x0001,
+	G_OP_DIRECTION =  0x0002,
+};
+enum GestureActions {
+	GRIGHT = 0x01,
+	GLEFT = 0x02,
+	GDOWN = 0x03,
+	GUP = 0x04,
+	GCW = 0x05,
+	GCCW = 0x06,
+};
+enum SliderActions {
+ SLIDE_LEFT = 0x01,
+ SLIDE_RIGHT = 0x02,
+};
 enum ButtonEventType {
 	TOUCH0_DOWN,
 	TOUCH0_UP,
@@ -85,9 +94,8 @@ enum ButtonEventType {
 	TACTILE1_DOWN,
 	TACTILE1_UP,
 	TACTILE0_DOWN,
-	TACTILE0_UP,
+	TACTILE0_UP
 };
-
 enum GestureEventType {
 	SWIPE_DOWN,
 	SWIPE_LEFT,
@@ -98,26 +106,22 @@ enum GestureEventType {
 	SLIDER_LEFT,
 	SLIDER_RIGHT
 };
-
 struct PointerEvent
 {
 	int x;
 	int y;
 	int sender;
 };
-
 struct GestureEvent
 {
 	int gestureType;
 	int sender;
 };
-
 struct ButtonEvent
 {
 	int buttonEventType;
 	int sender;
 };
-
 struct Pose6DEvent
 {
 	int x;
@@ -128,6 +132,89 @@ struct Pose6DEvent
 	float roll;
 	int sender;
 };
+struct GameControlEvent
+{
+	int x;
+	int y;
+	int trigger;
+	int sender;
+};
+struct Motion6DEvent
+{
+	float accelX;
+	float accelY;
+	float accelZ;
+	float gyroX;
+	float gyroY;
+	float gyroZ;
+	int sender;
+};
+struct FirmwareVersion
+{
+	int major = -1;
+	int minor = -1;
+	int subminor = -1;
+};
+struct DeviceManager
+{
+	BOOL isSubscribedPointer = false;
+	BOOL isSubscribedPose6D = false;
+	BOOL isSubscribedGestures = false;
+	BOOL isSubscribedButtons = false;
+	BOOL isSubscribedMotion6D = false;
+	BOOL isSubscribedGameControl = false;
+	FirmwareVersion firmwareVersion;
+	int batteryPercentage = -1;
+	int mode = -1;
+};
+enum charType : BYTE {
+	POINTER2D,
+	GESTURE,
+	POSE6D,
+	MOT6D,
+	BUTTON,
+	GAMECONTROL
+};
+enum OTAStatusEnum {
+	OTA_NOT_STARTED = 0x00,
+	OTA_DOWNLOADING = 0x01,
+	OTA_BCMSPEC = 0x02,
+	OTA_BCMAPP = 0x03,
+	OTA_LOADERSPEC = 0x04,
+	OTA_LOADER = 0x05,
+	OTA_STMSPEC = 0x06,
+	OTA_STMAPP = 0x07,
+	//INSERT MORE STATUS HERE all status are 0x0X
+	OTA_NO_NETWORK = 0xF0,
+	OTA_FAILURE = 0xF1,
+	//INTERT MORE FAILURES HERE all failures are 0xFX
+	OTA_FINISHED = 0xFF,
+};
+
+const unsigned int BUTTON_UP = 2;
+const unsigned int BUTTON_DOWN = 1;
+const unsigned int DEV = 0;
+const unsigned int ALPHA = 1;
+
+/*
+*		
+*			Methods which need their own thread for execution
+*
+*/
+//Methods to open sockets on different threads for nonblocking
+DWORD WINAPI openDataSocket(LPVOID lpParam);
+DWORD WINAPI listenNameSocket(LPVOID lpParam);
+int decodeAndSendEvents(unsigned char* bytes, int numBytes);
+//start service on a different thread to not block anyone calling while looking for rings
+DWORD WINAPI startServiceThread(LPVOID lpParam);
+DWORD WINAPI controlServiceAsync(LPVOID lpParam);
+
+
+/*
+*
+*			Open Spatial Service Controller Class
+*
+*/
 
 class OpenSpatialDelegate
 {
@@ -136,54 +223,56 @@ public:
 	virtual void gestureEventFired(GestureEvent event) = 0;
 	virtual void pose6DEventFired(Pose6DEvent event) = 0;
 	virtual void buttonEventFired(ButtonEvent event) = 0;
+	virtual void gameControlEventFired(GameControlEvent event) = 0;
+	virtual void motion6DEventFired(Motion6DEvent event) = 0;
+	virtual void setupComplete(){}
 	std::vector<std::string> names;
 };
 
-class OSAPI OpenSpatialServiceController
+class OpenSpatialServiceController
 {
 public:
 	OpenSpatialServiceController();
 	~OpenSpatialServiceController();
-	void waitForServiceStatus(DWORD statusTo, SC_HANDLE service);
+	int setupService();
 	std::vector<std::string> names;
+	std::map<std::string, DeviceManager> deviceMap;
 	std::vector<std::string> getNames();
+	std::string getNameAt(int i);
 	BOOL setup = false;
+	void controlService(int action, std::string name);
+	void setDelegate(OpenSpatialDelegate* del);
+	SC_HANDLE serviceManager;
+	void setBufferPackets(BOOL set);
+
+	//Service Control Methods
 	void subscribeToPointer(std::string name);
 	void subscribeToGesture(std::string name);
 	void subscribeToButton(std::string name);
 	void subscribeToPose6D(std::string name);
+	void subscribeToMotion6D(std::string name);
+	void subscribeToGameControl(std::string name);
+	void unsubscribeToPose6D(std::string name);
+	void unsubscribeToPointer(std::string name);
+	void unsubscribeToGesture(std::string name);
+	void unsubscribeToButton(std::string name);
+	void unsubscribeToMotion6D(std::string name);
+	void unsubscribeToGameControl(std::string name);
 	void shutdown(std::string name);
-	void setMode(std::string name, int mode);
 	void recenter(std::string name);
 	void recalibrate(std::string name);
 	void flipY(std::string name);
 	void flipRot(std::string name);
-	void setDelegate(OpenSpatialDelegate* del);
 	void refreshService();
-	SC_HANDLE serviceManager;
-	/* To Implement
-	void setRes();
-	void setInputQueueDepth();
-	void setTapTime();
-	void setDoubleTapTime();
-	void startService()
-	void stopService()
 
-	Other nControl / Battery and etc. Once implemented in service
-	*/
+	int waitForServiceStatus(DWORD statusTo, SC_HANDLE service);
+	SC_HANDLE OSService;
 private:
 	void ClearGlobalVariables();
-
 	DWORD openNameSocket();
-	SC_HANDLE OSService;
-	int setupService();
 	void sendName(std::string name);
-
 	HANDLE dataThreadHandle;
 	HANDLE nameThreadHandle;
-
 	DWORD dataThreadID;
 	DWORD nameThreadID;
 };
-
-

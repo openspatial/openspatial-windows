@@ -8,75 +8,110 @@ int __cdecl main(int argc, char **argv)
 	ExampleDelegate* del = new ExampleDelegate;
 	controller->setDelegate(del);
 	BOOL continuer = true;
+	//controller->setBufferPackets(true);
+	while (!controller->setup)
+	{
+		Sleep(100);
+	}
 	while (continuer)
 	{
 		std::string input;
 		printf("\nInput: ");
 		std::cin >> input;
-		if (strcmp(input.c_str(), "shutdown") == 0)
+		if (strcmp(input.c_str(), "bye") == 0)
 		{
-			printf("\nShutting Nod Down\n");
-			controller->shutdown(controller->names.at(0));
+			if (controller)
+			{
+				delete controller;
+			}
+			continuer = false;
+			printf("exiting");
 		}
-		if (strcmp(input.c_str(), "subscribe") == 0)
+		else
 		{
 			int index;
 			printf("\nIndex: ");
 			std::cin >> index;
-			printf("\nSubscribe To: ");
-			std::cin >> input;
-			if (strcmp(input.c_str(), "pointer") == 0)
-			{
-				printf("subscribe 2D %s\n", controller->names.at(index).c_str());
-				controller->subscribeToPointer(controller->names.at(index));
+			if (index >= (int) controller->names.size()) {
+			  printf("WARNING: Illegal index %d, assuming 0\n", index);
+			  index = 0;
 			}
-			if (strcmp(input.c_str(), "gesture") == 0)
+			if (strcmp(input.c_str(), "shutdown") == 0)
 			{
-				printf("subscribe gesture %s\n", controller->names.at(index).c_str());
-				controller->subscribeToGesture(controller->names.at(index));
+				//shutsdown ring at index
+				printf("\nShutting Nod Down\n");
+				controller->controlService(SHUTDOWN_NOD, controller->names.at(index));
 			}
-			if (strcmp(input.c_str(), "button") == 0)
+			if (strcmp(input.c_str(), "unsubscribe") == 0)
 			{
-				printf("subscribe button %s\n", controller->names.at(index).c_str());
-				controller->subscribeToButton(controller->names.at(index));
-			}
-			if (strcmp(input.c_str(), "pose6d") == 0)
-			{
-				printf("subscribe pose6d %s\n", controller->names.at(index).c_str());
-				for (int i = 0; i < controller->names.size(); i++)
+				printf("\nUnsubscribe To: ");
+				std::cin >> input;
+				if (strcmp(input.c_str(), "pointer") == 0)
 				{
-					controller->subscribeToPose6D(controller->names.at(i));
+					printf("unsubscribe 2D %s\n", controller->names.at(index));
+					controller->controlService(UNSUBSCRIBE_TO_POINTER, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "gesture") == 0)
+				{
+					printf("unsubscribe gesture %s\n", controller->names.at(index));
+					controller->controlService(UNSUBSCRIBE_TO_GESTURE, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "button") == 0)
+				{
+					printf("unsubscribe button %s\n", controller->names.at(index));
+					controller->controlService(UNSUBSCRIBE_TO_BUTTON, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "pose6d") == 0)
+				{
+					printf("unsubscribe pose6d %s\n", controller->names.at(index));
+					controller->controlService(UNSUBSCRIBE_TO_POSE6D, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "game") == 0)
+				{
+					printf("unsubscribe game %s\n", controller->names.at(index).c_str());
+					controller->controlService(UNSUBSCRIBE_TO_GAMECONTROL, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "mot6d") == 0)
+				{
+					printf("unsubscribe mot6d %s\n", controller->names.at(index));
+					controller->controlService(UNSUBSCRIBE_TO_MOT6D, controller->names.at(index));
 				}
 			}
-		}
-		if (strcmp(input.c_str(), "start") == 0)
-		{
-			printf("starting service\n");
-		}
-		if (strcmp(input.c_str(), "stop") == 0)
-		{
-			printf("stopping service\n");
-		}
-		if (strcmp(input.c_str(), "ttm") == 0)
-		{
-			printf("switching to ttm\n");
-			controller->setMode(controller->names.at(0), MODE_TTM);
-		}
-		if (strcmp(input.c_str(), "gamepad") == 0)
-		{
-			printf("switching to gamepad\n");
-			controller->setMode(controller->names.at(0), MODE_GAMEPAD);
-		}
-		if (strcmp(input.c_str(), "pose6d") == 0)
-		{
-			printf("switching to pose6d\n");
-			controller->setMode(controller->names.at(0), MODE_3D);
-		}
-		if (strcmp(input.c_str(), "bye") == 0)
-		{
-			printf("exiting");
-			delete controller;
-			continuer = false;
+			else if (strcmp(input.c_str(), "subscribe") == 0)
+			{
+				printf("\nSubscribe To: ");
+				std::cin >> input;
+				if (strcmp(input.c_str(), "pointer") == 0)
+				{
+					printf("subscribe 2D %s\n", controller->names.at(index).c_str());
+					controller->controlService(SUBSCRIBE_TO_POINTER, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "gesture") == 0)
+				{
+					printf("subscribe gesture %s\n", controller->names.at(index).c_str());
+					controller->controlService(SUBSCRIBE_TO_GESTURE, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "button") == 0)
+				{
+					printf("subscribe button %s\n", controller->names.at(index).c_str());
+					controller->controlService(SUBSCRIBE_TO_BUTTON, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "pose6d") == 0)
+				{
+						printf("subscribe pose6d %s\n", controller->names.at(index).c_str());
+						controller->controlService(SUBSCRIBE_TO_POSE6D, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "game") == 0)
+				{
+					printf("subscribe game %s\n", controller->names.at(index).c_str());
+					controller->controlService(SUBSCRIBE_TO_GAMECONTROL, controller->names.at(index));
+				}
+				if (strcmp(input.c_str(), "mot6d") == 0)
+				{
+					printf("subscribe mot6d %s\n", controller->names.at(index));
+					controller->controlService(SUBSCRIBE_TO_MOT6D, controller->names.at(index));
+				}
+			}
 		}
 	}
 	return 0;
