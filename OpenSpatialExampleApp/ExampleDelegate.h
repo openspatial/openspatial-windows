@@ -1,5 +1,5 @@
 #pragma once
-#include "../../OpenSpatialDLL/OpenSpatialDLL/OpenSpatialServiceController.h"
+#include "OpenSpatialServiceController.h"
 class ExampleDelegate : public OpenSpatialDelegate
 {
 public:
