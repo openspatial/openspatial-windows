@@ -1,123 +1,164 @@
 openspatial-windows
 ===================
 
-Open Spatial Windows SDK - BETA!!!!!
+Open Spatial Windows SDK
 
-Open Spatial Service Instructions (v0.0.2)
+Open Spatial Service Instructions (v0.0.3)
 
 Welcome to the Open Spatial Windows Service. Here are some basic instructions to get you started.
 
-The package you received will contain 3 folders
+As of 9/21/2015 the Windows SDK and service has been majorly modified. We have rewritten the entire SDK and service to improve robustness. Please refer to this guide to learn how to use the new SDK
 
-Nod Installer - Directory which contains the installation files
-OpenSpatialExampleApplication - a Visual Studio 2013 example project, showcasing how to integrate with the Nod Plugin
+------- Part 1: The package -----------
 
+First download or clone this repository. The repository has two folders. The Nod Installer and the Example Application. 
 
-Part 1: Installing the service
+Double click the setup.exe from the NodInstaller and follow the dialogs to install the Service. The Service will start on system boot up. To make sure the service is running open a task manager, click the services tab and look for OpenSpatialService.
 
-Run setup.exe in the Nod Installer Directory after reading the ReadMe file in the same directory.
+The example application is a VS2015 project which is already configured to use the Dynamic version of the SDK, The example application shows a simple way to connect to a device and retrieve data from it.
 
-Part 2: Starting the Service and Using the NodConfig application
+Once installed, there should be a folder called "Nod Labs" in your C:\Program Files (x86)\ folder. Here is the relevant directory structure.
 
-Connect all your rings to your PC via Bluetooth
-The Nod Configuration App should start automatically and you should see a Nod logo in your taskbar
+-Nod Configuration
+ - Dynamic SDK
+ - SDK
+ - Unity
+ 
+ The Dynamic SDK folder contains the ready to go DLL version of the SDK. This requires minimal linkage and is easy to get started with right away. It will also be what is covered in this guide.
+ 
+ The SDK folder contains a static version of the SDK. This is much more difficult to link against and requires some 3rd party libraries. Only use this if your application cannot use dynamic libraries (DLL) and you absolutely need a static library. For more information about this please go to developer.nod.com or visit/post on https://forums.nod.com. This SDK will not be covered in this guide.
+ 
+ The Unity folder contains the unity plugins for the service. These are just the bare unity plugins and do not include our Unity SDK. To get the full Unity SDK please visit our openspatial-unity repository. These have only been provided for versioning purposes. They should not need to be used and can be ignored.
+ 
+------- Part 2: Using the Nod Configuration Application -----------
 
-Double click the taskbar icon to Open the configuration GUI. Here you can find your connected rings, perform software updates, change the mode. There are also some tutorials to help you start using Nod.
+After installation a Nod Logo should appear in your system tray. Double Click this to open the Nod Configuration Application. This will show a list of connected Nod devices. This application is in early alpha so many of the features are incomplete. Currently it is only used to list the availible devices.
 
-Part 3: Writing your own application with the Plugin Source (using visual studio)
-	Note: currently only C++ is supported.
+To use a Nod device with Windows your Nod device must be paired. For more instructions on how to pair a device to Windows visit developer.nod.com.
 
-Create a new visual studio project
+Any devices that are paired will appear in the list of devices.
 
-Add the OpenSpatialServiceController.h/cpp into your project. These can be found in Program Files (x86)/Nod Labs/Nod Configuration/SDK.
+------- Part 3: Development with the Dynamic SDK -----------
 
-Now you are ready to start using the code. (Please look at the source of the provided visual studio example project if there is any confusion).
+There are 4 parts to the dynamic SDK:
+ - OpenSpatialDll.dll
+ - OpenSpatialDll.lib
+ - NodPlugin.h
+ - Settings.h
+ 
+The DLL and lib have been provided in a 32 bit and 64 bit version both under the Dynamic SDK directory in corresponding x86 and x86_64 directories. Use the appropriate one to build for the architecture you desire.
 
-There are two C++ classes which are relevant to integrating with Nod.
-OpenSpatialServiceController
-OpenSpatialDelegate
+To link in the SDK add NodPlugin.h and Settings.h into your include path. In visual studio this can be as simple as placing the files in your project directory. Or, more optimally, going to your project settings and adding the directory in which you want to store these files to your "additional include directories" path. 
 
-Step One: Instantiate OpenSpatial Controller
+Next do the same with OpenSpatialDll.lib except place it in your library search path. 
 
-OpenSpatialServiceController is the class which interacts with the OpenSpatialService to control your Nod and get data.
+Next place the DLL in the same directory as the executable your project will generate. For Visual Studio projects you may just place it within your project directory.
 
-To use this class first create an instance of it. This will automatically setup the connection to the service.
+Now to begin coding:
 
-The service works through a subscription / event model. There are 4 types of events
-Pointer events - 2D X,Y data
-Gesture Events - Swipe Up, Swipe Down etc. These gestures should be explained in your Nod Manual
-Button Events - Touches, Tactiles etc, please refer to your Nod Manual for an explanation of the buttons
-Pose6D Events - X, Y, Z, Yaw, Pitch, Roll - 3D rotational and translational data. (Currently only rotation euler angles are supported X, Y and Z will always be 0)
+There are 9 functions you can call with this DLL:
 
-There is one function in the OpenSpatialServiceController to control the entire service
+	NODPLUGIN_API bool NodInitialize(void(*evFiredFn)(NodEvent));
+    NODPLUGIN_API bool NodShutdown(void);
+    NODPLUGIN_API bool NodRefresh(void);
 
-    void controlService(int action, std::string name);
+    NODPLUGIN_API int  NodNumRings(void);
+    const NODPLUGIN_API char* NodGetRingName(int ringID);
 
-This function uses an enumerated action number and the name of the ring you would like to control. To see the full list of service commands refer to the .h file. Some enumerated values require the admnistrator version of the SDK and you will not be able to use them. The values exposed are as follows. 
+    NODPLUGIN_API bool NodSubscribe(Modality mode, const char* deviceName);
+    NODPLUGIN_API bool NodUnsubscribe(Modality mode, const char* deviceName);
 
-    enum ServiceControlCode {
-    SUBSCRIBE_TO_POINTER = 128,
-    SUBSCRIBE_TO_GESTURE = 129,
-    SUBSCRIBE_TO_POSE6D = 130,
-    SUBSCRIBE_TO_BUTTON = 131,
-    GET_CONNECTED_NAMES = 133,
-    UNSUBSCRIBE_TO_POINTER = 134,
-    UNSUBSCRIBE_TO_GESTURE = 135,
-    UNSUBSCRIBE_TO_POSE6D = 136,
-    UNSUBSCRIBE_TO_BUTTON = 147,
-    SUBSCRIBE_TO_MOT6D = 155,
-    SUBSCRIBE_TO_GAMECONTROL = 156,
-    UNSUBSCRIBE_TO_MOT6D = 157,
-    UNSUBSCRIBE_TO_GAMECONTROL = 158,
-    REFRESH_SERVICE = 145,
+    NODPLUGIN_API bool NodRequestDeviceInfo(const char* deviceName);
+    NODPLUGIN_API bool NodChangeSetting(const char* deviceName, Settings setting, int args[], int numArgs);
+	
+The SDK functions using a "callback" and "subscription" design. To initialize the SDK call NodInitialize. This function accepts a function pointer to a function which accepts one argument, a NodEvent struct. The function pointer passed into the NodInitialize function will be the "callback" function which will recieve all data.
+
+After calling NodInitialize the service and your application will start communicating with each other. Because the connection takes a short time to be established and NodInitialize is asynchronous, any attempt to use your Nod device before the connection is established will not work. Your "callback" function will alert you connection is established.
+
+The "callback" function:
+
+The callback function should take the form of: 
+
+	void callbackFunction(NodEvent ev)
+
+The NodEvent struct is defined in NodPlugin.h and is as follows:
+
+	struct NodEvent {
+        EventType type = NONE_T;
+        int x = NOD_NONE;
+        int y = NOD_NONE;
+        int z = NOD_NONE;
+        float xf = NOD_NONE;
+        float yf = NOD_NONE;
+        float zf = NOD_NONE;
+        int trigger = NOD_NONE;
+        float roll = NOD_NONE;
+        float pitch = NOD_NONE;
+        float yaw = NOD_NONE;
+        float buttonID = NOD_NONE;
+        UpDown buttonState = NONE_UD;
+        int batteryPercent = NOD_NONE;
+        GestureType gesture = NONE_G;
+        FirmwareVersion firmwareVersion;
     };
+	
+The type field refers to the type of event contained within the NodEvent struct the types are (also defined in NodPlugin.h):
 
-These functions take in a ring name string. There is a vector defined as public member of the OpenSpatialController class:
+    Button,
+    Accelerometer,
+    EulerAngles,
+    AnalogData,
+    Gestures,
+    Pointer,
+    Translation,
+    Gyroscope,
+    DeviceInfo,
+    ServiceReady
+	
+For each event the NodEvent struct will only be populated with the information needed for that event. 
 
-	std::vector<std::string> names;
+	Button -> buttonID, buttonState
+	Accelerometer -> xf, yf, zf
+	EulerAngles -> roll, pitch, yaw
+	AnalogData -> x, y, trigger
+	Gestures -> gesture
+	Pointer -> x, y
+	Translation -> x, y, z (Currently unsupported by firmware)
+	Gyroscope -> xf, yf, zf
+	DeviceInfo -> batteryPercent, firmwareVersion
+	ServiceReady -> none
+	
+The "subscribe" function:
 
-This vector will contain all the names of your connected rings, so for example to subscribe to Pointer events of the first ring:
+	NODPLUGIN_API bool NodSubscribe(Modality mode, const char* deviceName);
+	
+	This function requests data of a certain mode from a device. Modalities are defined in NodPlugin.h in the modality enum and are as follows:
+	
+	    ButtonMode
+		AccelMode
+		EulerMode
+		GameControlMode
+		GestureMode
+		PointerMode
+		TranslationMode
+		GyroMode
+		
+	So NodSubscribe(EulerMode, NodGetRingName(0)) will subscribe to EulerAngles for the ring with id 0.
+	
+This is the bare information you need to get started with a Nod Device on Windows. In summary here are the steps to develop:
 
-	openSpatialController->controlService(SUBSCRIBE_TO_POINTER, names.at(0));
+1. Create a "callback" function
+2. call InitializeNod with your "callback" function
+3. wait for your callback function to be called with a type of "ServiceReady"
+4. Call NodNumRings() to determine the number of devices connected to your machine.
+5. Call NodGetRingName on the id of your choice (the id is between 0 and NodNumrings) to retrieve the device's name.
+6. Call Subscribe and pass in the modality and ring name of your choosing.
+7. Your "callback" function should now be called whenever there is an update from your device.
 
-NOTE: For previous users of our SDK, the control service function was added due to the SDK now being asynchronous. The old functions (subscribeToPointer, subscribeToPose6D) will still work however they will not contain the synchronization added for the new SDK model.
+This is a rough guide to the OpenSpatial Windows SDK for more information visit developer.nod.com or create a topic on our forums, https://forums.nod.com
+	
+ 
+	
+	
 
-Step Two: Create a Delegate Class
 
-The OpenSpatialDelegate interface defined in OpenSpatialServiceController.h is the class which receives the data from the service.
-
-Create a class which implements this interface. For an example please refer to the ExampleDelegate Class in the example app.
-
-The interface has methods which are called when data is sent from Nod. These functions are in the format:
-
-	virtual void pointerEventFired(PointerEvent event);
-
-Each function will have one event argument which contains the event data. These arguments are structs defined in OpenSpatialServiceController.h
-
-For example the PointerEvent struct contains 3 members. X, the x value of the pointer event. Y, the y value of the pointer event. id, the id of the ring sending the event. This id is an integer starting at 0. It corresponds to the ring at that index in the names vector mentioned earlier.
-
-In these functions implement your handling of the data you need. Notice the example app just prints out the data in a readable format.
-
-Step Three: ASSIGN YOUR DELEGATE!
-
-call the setDelegate function of OpenSpatialServiceController to assign the delegate. Without this you will not receive any data.
-
-e.x. *yourOpenSpatialController* -> setDelegate(*yourOpenSpatialDelegate);
-
-Step Four: The setup callback
-
-NOTE: for previous users of the SDK this is a new step which ensures you wait for the setup of the service to complete before performing any operations on the service.
-
-The interface for the delegate class contains a function:
-
-    virtual void setupComplete();
-
-This function will be called when the service is fully setup and the names of all the connected rings have been recieved. Attempting to access the names before this function will not work. The vector of ring names is not populated until this function is called. Continue all Nod setup in this callback.
-
-Step Five: Enjoy your data
-
-Data should now be flowing into your application once you subscribe to the appropriate events.
-
-Thank You for using Nod!
-
-For any questions regarding this windows service or Nod in general please email: support@nod-labs.com
