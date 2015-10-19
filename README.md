@@ -17,8 +17,13 @@ Double click the setup.exe from the NodInstaller and follow the dialogs to insta
 
 The example application is a VS2015 project which is already configured to use the Dynamic version of the SDK, The example application shows a simple way to connect to a device and retrieve data from it.
 
+<<<<<<< HEAD
+=======
+Once installed, there should be a folder called "Nod Labs" in your C:\Program Files (x86)\ folder. Here is the relevant directory structure.
+=======
 Once installed, there should be a folder called "Nod Labs" in your C:\Program Files (x86)\ folder. There are 3 folders that
 will contain the SDK dependencies:
+>>>>>>> 8c23d43257c0edd6c68fdcf35a4a93972353fab4
 
  - Dynamic SDK
  - SDK
@@ -100,6 +105,7 @@ The NodEvent struct is defined in NodPlugin.h and is as follows:
         int batteryPercent = NOD_NONE;
         GestureType gesture = NONE_G;
         FirmwareVersion firmwareVersion;
+        int sender = NOD_NONE;
     };
 	
 The type field refers to the type of event contained within the NodEvent struct the types are (also defined in NodPlugin.h):

@@ -18,7 +18,7 @@ void eventFired(NodEvent ev)
     }
     else if (ev.type == EventType::EulerAngles)
     {
-        printf("\nEuler Angle Fired, roll: %f, pitch: %f, yaw: %f", ev.roll, ev.pitch, ev.yaw);
+        printf("\nEuler Angle Fired, roll: %f, pitch: %f, yaw: %f from: %d", ev.roll, ev.pitch, ev.yaw, ev.sender);
     }
 }
 

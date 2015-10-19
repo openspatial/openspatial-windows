@@ -99,6 +99,7 @@ extern "C" {
         int batteryPercent = NOD_NONE;
         GestureType gesture = NONE_G;
         FirmwareVersion firmwareVersion;
+        int sender = NOD_NONE;
     };
 
     NODPLUGIN_API bool NodInitialize(void(*evFiredFn)(NodEvent));
