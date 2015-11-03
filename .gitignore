@@ -3,7 +3,6 @@ S junk files
 *.DS_Store
 
 #Visual Studio files
-*.vcxproj
 *.filters
 *.[Oo]bj
 *.user
@@ -21,7 +20,6 @@ S junk files
 *.[Cc]ache
 *.ilk
 *.log
-*.lib
 *.sbr
 *.sdf
 *.opensdf
