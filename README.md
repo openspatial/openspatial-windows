@@ -12,7 +12,7 @@ As of 9/21/2015 (v0.0.3) the Windows SDK and service has been majorly modified. 
 
 ===================
 
-For SDK Documentation please visit: https://dev.nod.com/docs/windows/getting-started/
+For SDK Documentation please visit: http://dev.nod.com/docs/windows/getting-started/
 
 NOTE: EXAMPLE APP INSTRUCTIONS HAVE BEEN CHANGED AND MAY NOT BE REFLECTED ON OUR DEVELOPER SITE
 
